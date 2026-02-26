@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BisayaHub - Free Bisaya Learning Platform</title>
+    <meta name="description" content="Free, open-source Bisaya language learning platform. Learn Cebuano/Bisaya words, phrases, and culture.">
+    <meta name="keywords" content="Bisaya, Cebuano, learn Bisaya, Filipino language, free language learning">
+    <meta name="author" content="BisayaHub Community">
+    <meta property="og:title" content="BisayaHub - Learn Bisaya for Free">
+    <meta property="og:description" content="Free, interactive Bisaya language learning platform">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tagalog&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading" class="loading-screen">
+            <div class="loading-content">
+                <div class="logo-animated">🏝️</div>
+                <h1>BisayaHub</h1>
+                <p>Loading your learning journey...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Interface -->
+        <div id="main-interface" class="hidden">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <div class="logo">🏝️ BisayaHub</div>
+                    <span class="badge free">100% FREE</span>
+                </div>
+                <div class="header-right">
+                    <button class="icon-btn" onclick="toggleTheme()" title="Dark Mode">🌙</button>
+                    <button class="icon-btn" onclick="showStats()" title="Your Progress">📊</button>
+                    <button class="icon-btn" onclick="showSettings()" title="Settings">⚙️</button>
+                </div>
+            </header>
+
+            <!-- User Profile Bar -->
+            <div class="profile-bar" id="profileBar">
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar">👤</div>
+                    <div class="user-details">
+                        <span class="user-name" id="userName">Learner</span>
+                        <span class="user-level" id="userLevel">Level 1 • Beginner</span>
+                    </div>
+                </div>
+                <div class="stats-mini">
+                    <div class="stat-item">
+                        <span class="stat-value" id="xpValue">0</span>
+                        <span class="stat-label">XP</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="streakValue">🔥0</span>
+                        <span class="stat-label">Streak</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="wordsValue">0</span>
+                        <span class="stat-label">Words</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mode Selector -->
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="setMode('chat')" data-mode="chat">
+                    💬 Chat
+                </button>
+                <button class="mode-btn" onclick="setMode('learn')" data-mode="learn">
+                    📚 Learn
+                </button>
+                <button class="mode-btn" onclick="setMode('practice')" data-mode="practice">
+                    🎯 Practice
+                </button>
+                <button class="mode-btn" onclick="setMode('culture')" data-mode="culture">
+                    🏝️ Culture
+                </button>
+            </div>
+
+            <!-- Main Content Area -->
+            <main class="content-area">
+                <!-- Chat Mode -->
+                <div id="chat-mode" class="mode-content active">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages appear here -->
+                        </div>
+                        <div class="chat-suggestions" id="chatSuggestions">
+                            <button class="suggestion-chip" onclick="sendQuick('How do I say hello?')">👋 Say hello</button>
+                            <button class="suggestion-chip" onclick="sendQuick('Teach me a food word')">🍜 Food words</button>
+                            <button class="suggestion-chip" onclick="sendQuick('Common phrases')">💬 Common phrases</button>
+                            <button class="suggestion-chip" onclick="sendQuick('Start a quiz')">🎯 Quiz me</button>
+                        </div>
+                        <div class="chat-input-area">
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text" 
+                                    id="chatInput" 
+                                    placeholder="Type in English or Bisaya..."
+                                    autocomplete="off"
+                                    onkeypress="if(event.key==='Enter')sendMessage()"
+                                >
+                                <button class="voice-btn" onclick="toggleVoice()" id="voiceBtn">🎤</button>
+                                <button class="send-btn" onclick="sendMessage()">➤</button>
+                            </div>
+                            <p class="input-hint">Press Enter to send • Use teach:word=meaning to add words</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learn Mode -->
+                <div id="learn-mode" class="mode-content hidden">
+                    <div class="learn-container">
+                        <h2>📚 Learning Modules</h2>
+                        <div class="module-grid" id="moduleGrid">
+                            <!-- Modules loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice Mode -->
+                <div id="practice-mode" class="mode-content hidden">
+                    <div class="practice-container">
+                        <h2>🎯 Practice Activities</h2>
+                        <div class="activity-cards">
+                            <div class="activity-card" onclick="startQuiz()">
+                                <div class="card-icon">❓</div>
+                                <h3>Quick Quiz</h3>
+                                <p>Test your knowledge</p>
+                            </div>
+                            <div class="activity-card" onclick="startFlashcards()">
+                                <div class="card-icon">🎴</div>
+                                <h3>Flashcards</h3>
+                                <p>Review words</p>
+                            </div>
+                            <div class="activity-card" onclick="startMatching()">
+                                <div class="card-icon">🧩</div>
+                                <h3>Matching Game</h3>
+                                <p>Match words to meanings</p>
+                            </div>
+                            <div class="activity-card" onclick="startConversation()">
+                                <div class="card-icon">💬</div>
+                                <h3>Roleplay</h3>
+                                <p>Practice conversations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Culture Mode -->
+                <div id="culture-mode" class="mode-content hidden">
+                    <div class="culture-container">
+                        <h2>🏝️ Bisaya Culture</h2>
+                        <div class="culture-content" id="cultureContent">
+                            <article class="culture-article">
+                                <h3>About Bisaya Language</h3>
+                                <p>Bisaya (Cebuano) is spoken by 20+ million people in the Philippines, primarily in Visayas and Mindanao.</p>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="app-footer">
+                <p>🇵🇭 Made with love for the Bisaya community</p>
+                <p class="footer-links">
+                    <a href="https://github.com/yourusername/bisayahub" target="_blank">GitHub</a> • 
+                    <a href="#" onclick="showAbout()">About</a> • 
+                    <a href="#" onclick="showContribute()">Contribute</a>
+                </p>
+                <p class="license">MIT License • Free forever</p>
+            </footer>
+        </div>
+
+        <!-- Modals -->
+        <div id="statsModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>📊 Your Progress</h2>
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Stats loaded dynamically -->
+                </div>
+                <button onclick="closeModal('statsModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
